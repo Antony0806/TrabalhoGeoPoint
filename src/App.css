@@ -1,37 +1,3 @@
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  padding: 15px 30px;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-}
-
-.navbar h2 {
-  margin: 0;
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-}
-
-.nav-links a:hover {
-  text-decoration: underline;
-}
-
-main {
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 20px;
-}
 
 .filtro-pontos {
   margin: 24px 0;
@@ -77,10 +43,4 @@ main {
 
 .tabela-pontos button {
   cursor: pointer;
-}
-
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-  }
 }
