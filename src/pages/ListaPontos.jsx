@@ -13,40 +13,39 @@ function ListaPontos() {
   const [excluindoId, setExcluindoId] = useState(null);
 
   useEffect(() => {
+    let ativo = true;
+
     async function carregarPontos() {
       try {
         const dados = await listarPontos();
-        setPontos(dados);
+        if (!Array.isArray(dados)) {
+          throw new Error('A API retornou uma lista em formato inesperado.');
+        }
+        if (ativo) setPontos(dados);
       } catch (erro) {
-        setErro(erro.message);
+        if (ativo) setErro(erro.message);
       } finally {
-        setCarregando(false);
+        if (ativo) setCarregando(false);
       }
     }
 
     carregarPontos();
+    return () => { ativo = false; };
   }, []);
 
   const pontosFiltrados = pontos.filter((ponto) =>
-    ponto.name.toLowerCase().includes(filtro.toLowerCase())
+    (ponto.name || '').toLowerCase().includes(filtro.toLowerCase())
   );
 
   async function handleExcluir(id) {
-    const confirmar = window.confirm(
-      'Deseja realmente excluir este ponto?'
-    );
-
-    if (!confirmar) return;
-
+    if (excluindoId !== null) return;
+    if (!window.confirm('Deseja realmente excluir este ponto?')) return;
     setExcluindoId(id);
     setErro('');
 
     try {
       await excluirPonto(id);
-
-      setPontos((listaAtual) =>
-        listaAtual.filter((ponto) => ponto.id !== id)
-      );
+      setPontos((atuais) => atuais.filter((ponto) => ponto.id !== id));
     } catch (erro) {
       setErro(erro.message);
     } finally {
@@ -55,27 +54,22 @@ function ListaPontos() {
   }
 
   return (
-    <section>
-      <h1>Pontos Geográficos</h1>
-      <p>Consulte e gerencie os pontos cadastrados.</p>
+    <section className="pagina-lista">
+      <div className="cabecalho-pagina">
+        <div>
+          <h1>Pontos geográficos</h1>
+          <p>Consulte e gerencie os pontos cadastrados.</p>
+        </div>
+        <Link className="botao" to="/pontos/novo">+ Novo ponto</Link>
+      </div>
 
-      <Link to="/pontos/novo">
-        Novo Ponto
-      </Link>
+      <FiltroPontos filtro={filtro} setFiltro={setFiltro} />
 
-      <FiltroPontos
-        filtro={filtro}
-        setFiltro={setFiltro}
-      />
-
-      {carregando && <p>Carregando pontos...</p>}
-
+      {carregando && <p role="status">Carregando pontos...</p>}
       {erro && <p role="alert">Erro: {erro}</p>}
-
-      {!carregando && !erro && pontosFiltrados.length === 0 && (
+      {!carregando && pontosFiltrados.length === 0 && !erro && (
         <p>Nenhum ponto encontrado.</p>
       )}
-
       {!carregando && pontosFiltrados.length > 0 && (
         <TabelaPontos
           pontos={pontosFiltrados}
