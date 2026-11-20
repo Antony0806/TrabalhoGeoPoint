@@ -59,3 +59,23 @@ main {
     flex-direction: column;
   }
 }
+
+.detalhe-ponto {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.detalhe-ponto p {
+  margin-bottom: 16px;
+}
+
+.acoes-detalhe {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 24px;
+}
