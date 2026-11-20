@@ -1,4 +1,13 @@
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+main {
+  padding: 0 20px;
+}
+
 .filtro-pontos {
   margin: 24px 0;
 }
@@ -43,4 +52,10 @@
 
 .tabela-pontos button {
   cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+  }
 }
